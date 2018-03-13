@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="home_grid_spacing">8dp</dimen>
+    <dimen name="home_grid_img_height">160dp</dimen>
+    <dimen name="app_bar_height">300dp</dimen>
+    <dimen name="detail_img_width">120dp</dimen>
+    <dimen name="detail_img_height">160dp</dimen>
+    <dimen name="base_margin">16dp</dimen>
+    <dimen name="movie_detail_text_top_padding">5dp</dimen>
+    <dimen name="text_size_h1">16sp</dimen>
+    <dimen name="text_size_h2">14sp</dimen>
+</resources>

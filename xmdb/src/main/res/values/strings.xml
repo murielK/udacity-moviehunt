@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">xMDB</string>
+    <string name="base_url" translatable="false">https://api.themoviedb.org/3/</string>
+    <string name="error_msg_not_connected">Sorry, internet connection is required.</string>
+    <string name="error_msg_something_went_wrong">Something went wrong.</string>
+    <string name="base_poster_url" translatable="false">http://image.tmdb.org/t/p/</string>
+    <string name="moive_poster_size" translatable="false">/w342</string>
+    <string name="_5" translatable="false">/10</string>
+    <string name="storyline">Storyline</string>
+    <string name="release_date">Release date:</string>
+    <string name="most_popular">Most popular</string>
+    <string name="highest_rated">Highest-rated</string>
+    <string name="moive_backdrop_size" translatable="false">w780</string>
+</resources>

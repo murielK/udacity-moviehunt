@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:color="@color/colorDefaultRipple"
+    tools:targetApi="lollipop">
+
+    <item android:id="@android:id/mask">
+        <color android:color="@android:color/black" />
+    </item>
+
+    <item>
+        <selector xmlns:android="http://schemas.android.com/apk/res/android">
+            <!-- pressed -->
+            <item
+                android:drawable="@color/colorDefaultPressed"
+                android:state_pressed="true" />
+            <!-- default -->
+            <item android:drawable="@android:color/transparent" />
+        </selector>
+    </item>
+</ripple>

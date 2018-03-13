@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#F45A5A</color>
+    <color name="colorPrimaryDark">#DB5050</color>
+    <color name="colorAccent">#303f9f</color>
+    <color name="textColorPrimary">#000000</color>
+    <color name="textColorSecondary">#757575</color>
+    <color name="colorSecondaryInactive">#FFAEAE</color>
+    <color name="colorDefaultRipple">#78f45a5a</color>
+    <color name="colorDefaultPressed">#64ffaeae</color>
+</resources>
