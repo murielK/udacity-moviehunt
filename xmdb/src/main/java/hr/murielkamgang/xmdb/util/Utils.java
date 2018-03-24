@@ -89,16 +89,19 @@ public class Utils {
         }
     }
 
-    public static String makePosterUrlFor(Context context, String path) {
-        final String basePosterUrl = context.getResources().getString(R.string.base_poster_url);
-        final String posterSizePath = context.getResources().getString(R.string.moive_poster_size);
-        return basePosterUrl + posterSizePath + path;
+    public static String makeMoviePosterUrlFor(Context context, String path) {
+        return getImgBaseUrl(context) + context.getResources().getString(R.string.moive_poster_size) + path;
     }
 
-    public static String makeBackDropUrlFor(Context context, String path) {
-        final String basePosterUrl = context.getResources().getString(R.string.base_poster_url);
-        final String posterSizePath = context.getResources().getString(R.string.moive_backdrop_size);
-        return basePosterUrl + posterSizePath + path;
+    public static String makeMovieBackDropUrlFor(Context context, String path) {
+        return getImgBaseUrl(context) + context.getResources().getString(R.string.moive_backdrop_size) + path;
     }
 
+    public static String makePeoplePosterUrlFor(Context context, String path) {
+        return makeMoviePosterUrlFor(context, path);//for now use the same setting as the moviePoster
+    }
+
+    private static String getImgBaseUrl(Context context) {
+        return context.getResources().getString(R.string.base_poster_url);
+    }
 }

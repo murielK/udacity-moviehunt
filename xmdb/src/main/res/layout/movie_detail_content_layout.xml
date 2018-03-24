@@ -3,14 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/base_margin">
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.AppCompatRatingBar
         android:id="@+id/ratingBar"
         style="@style/Widget.AppCompat.RatingBar.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:numStars="10"
         android:stepSize="0.1"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,11 +22,13 @@
         android:id="@+id/textViewRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginStart="24dp"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/text_size_h1"
         app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/ratingBar"
         app:layout_constraintTop_toTopOf="@+id/ratingBar"
         tools:text="4.5" />
@@ -41,48 +44,56 @@
         app:layout_constraintStart_toEndOf="@+id/textViewRating"
         tools:text="/5" />
 
-    <TextView
-        android:id="@+id/textViewStoryLine"
-        android:layout_width="wrap_content"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/storyline"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="@dimen/text_size_h2"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.187"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/space"
+        app:tabIndicatorHeight="0dp"
+        app:tabMode="scrollable"
+        app:tabPaddingEnd="0dp"
+        app:tabPaddingStart="0dp"
+        app:tabSelectedTextColor="@color/colorPrimary"
+        app:tabTextAppearance="@style/TabTextStyle"
+        app:tabTextColor="@color/textColorPrimary">
 
-    <TextView
-        android:id="@+id/textViewStoryLineInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/textColorSecondary"
-        android:textSize="@dimen/text_size_h2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewStoryLine"
-        tools:text="This is probably the best movie ever!" />
+    </android.support.design.widget.TabLayout>
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <View
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
         android:layout_marginTop="24dp"
-        android:text="@string/release_date"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="@dimen/text_size_h2"
+        android:background="@color/textColorSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
-    <TextView
-        android:id="@+id/textViewReleaseDate"
-        android:layout_width="wrap_content"
+    <View
+        android:id="@+id/space2"
+        android:layout_width="0dp"
+        android:layout_height="0.1dp"
+        android:background="@color/textColorSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+
+    <hr.murielkamgang.xmdb.components.details.customView.CustomViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:textColor="@color/textColorSecondary"
-        android:textSize="@dimen/text_size_h2"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView5"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
-        tools:text="10 March 2018" />
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/space2" />
+
 </android.support.constraint.ConstraintLayout>

@@ -70,7 +70,7 @@ public class MovieRemoteSource extends BaseRemoteDataSource<Movie, BaseKVH> impl
     @Override
     public Movie getData(BaseKVH baseKVH) {
         try {
-            return movieApi.getMovie(apiKey, baseKVH.getFieldValue()).execute().body();
+            return movieApi.getMovie(baseKVH.getFieldValue(), apiKey).execute().body();
         } catch (NullPointerException | IOException e) {
             logger.debug("", e);
 
@@ -112,7 +112,7 @@ public class MovieRemoteSource extends BaseRemoteDataSource<Movie, BaseKVH> impl
         Call<MoviePage> getTopRated(@Query("api_key") String apiKey, @Query("page") int page);
 
         @GET("movie/{movieId}")
-        Call<Movie> getMovie(@Query("api_key") String apiKey, @Path("movieId") int movieId);
+        Call<Movie> getMovie(@Path("movieId") int movieId, @Query("api_key") String apiKey);
 
     }
 

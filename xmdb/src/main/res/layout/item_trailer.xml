@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageViewTrailer"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/trailer_img_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@android:color/black" />
+
+    <TextView
+        android:id="@+id/textViewTrailerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/text_size_h4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewTrailer"
+        tools:text="Mission very possible trailer #1" />
+
+    <ImageView
+        android:id="@+id/imageViewClick"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/item_default_selector"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewTrailer"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewTrailer"
+        app:layout_constraintStart_toStartOf="@+id/imageViewTrailer"
+        app:layout_constraintTop_toTopOf="@+id/imageViewTrailer"
+        tools:srcCompat="@drawable/ic_play" />
+</android.support.constraint.ConstraintLayout>

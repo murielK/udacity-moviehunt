@@ -33,7 +33,7 @@ class HomeAdapter extends BaseRecyclerViewAdapter<Movie, BaseRecyclerViewAdapter
 
     @Override
     public ItemBaseVH onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MovieVH(LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_item_home, parent, false));
+        return new MovieVH(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home, parent, false));
     }
 
     class MovieVH extends ItemBaseVH {
@@ -55,7 +55,7 @@ class HomeAdapter extends BaseRecyclerViewAdapter<Movie, BaseRecyclerViewAdapter
         @Override
         protected void performBinding(Movie movie) {
             picasso
-                    .load(Utils.makePosterUrlFor(imageView.getContext(), movie.getPosterPath()))
+                    .load(Utils.makeMoviePosterUrlFor(imageView.getContext(), movie.getPosterPath()))
                     .fit()
                     .transform(new RoundedCornersTransformation(10, 0))
                     .into(imageView);

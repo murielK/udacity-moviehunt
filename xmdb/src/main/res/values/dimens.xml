@@ -9,4 +9,10 @@
     <dimen name="movie_detail_text_top_padding">5dp</dimen>
     <dimen name="text_size_h1">16sp</dimen>
     <dimen name="text_size_h2">14sp</dimen>
+    <dimen name="people_img_width">80dp</dimen>
+    <dimen name="people_img_height">90dp</dimen>
+    <dimen name="text_size_h3">12sp</dimen>
+    <dimen name="text_size_h4">10sp</dimen>
+    <dimen name="trailer_img_height">140dp</dimen>
+    <dimen name="recycler_view_movie_info_height">160dp</dimen>
 </resources>

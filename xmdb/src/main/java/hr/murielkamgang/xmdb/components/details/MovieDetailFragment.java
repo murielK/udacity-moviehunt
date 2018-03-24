@@ -6,7 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -18,16 +23,15 @@ import com.squareup.picasso.Picasso;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import dagger.Lazy;
 import hr.murielkamgang.xmdb.R;
 import hr.murielkamgang.xmdb.components.base.BaseDialogFragment;
+import hr.murielkamgang.xmdb.components.details.info.MovieInfoFragment;
 import hr.murielkamgang.xmdb.data.model.movie.Movie;
 import hr.murielkamgang.xmdb.util.Utils;
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
@@ -45,6 +49,9 @@ public class MovieDetailFragment extends BaseDialogFragment<MovieDetailContract.
     @Inject
     Picasso picasso;
 
+    @Inject
+    Lazy<MovieInfoFragment> movieInfoFragmentLazy;
+
     @BindView(R.id.imageViewPoster)
     ImageView imageViewPoster;
 
@@ -56,12 +63,6 @@ public class MovieDetailFragment extends BaseDialogFragment<MovieDetailContract.
 
     @BindView(R.id.textViewReleaseYear)
     TextView textViewReleaseYear;
-
-    @BindView(R.id.textViewReleaseDate)
-    TextView textViewReleaseDate;
-
-    @BindView(R.id.textViewStoryLineInput)
-    TextView textViewStoryLineInput;
 
     @BindView(R.id.textViewRating)
     TextView textViewRating;
@@ -77,6 +78,12 @@ public class MovieDetailFragment extends BaseDialogFragment<MovieDetailContract.
 
     @BindView(R.id.imageViewBackdrop)
     ImageView imageViewBackdrop;
+
+    @BindView(R.id.tabLayout)
+    TabLayout tabLayout;
+
+    @BindView(R.id.viewPager)
+    ViewPager viewPager;
 
     Movie movie;
 
@@ -111,20 +118,24 @@ public class MovieDetailFragment extends BaseDialogFragment<MovieDetailContract.
 
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
-                }
-                if (scrollRange + verticalOffset == 0) {
-                    if (movie != null && movie.isValid()) {
-                        toolbar.setTitle(movie.getTitle());
-                        toolbar.setSubtitle(getMovieYear(movie));
+                appBarLayout.post(() -> {
+                    if (scrollRange == -1) {
+                        scrollRange = appBarLayout.getTotalScrollRange();
                     }
-                    isShow = true;
-                } else if (isShow) {
-                    toolbar.setTitle(" ");
-                    toolbar.setSubtitle(" ");
-                    isShow = false;
-                }
+                    if (scrollRange + verticalOffset == 0) {
+                        if (movie != null && movie.isValid() && toolbar != null) {
+                            toolbar.setTitle(movie.getTitle());
+                            toolbar.setSubtitle(getMovieYear(movie));
+                            isShow = true;
+                        }
+                    } else if (isShow) {
+                        if (toolbar != null) {
+                            toolbar.setTitle(" ");
+                            toolbar.setSubtitle(" ");
+                            isShow = false;
+                        }
+                    }
+                });
             }
         });
     }
@@ -134,26 +145,36 @@ public class MovieDetailFragment extends BaseDialogFragment<MovieDetailContract.
         super.onActivityCreated(savedInstanceState);
         if (presenter != null) {
             presenter.setView(this);
-            presenter.loadMovie();
+            presenter.load();
         }
     }
 
     @Override
     public void onMovieLoaded(Movie movie) {
+        bindViews(movie);
+        setUpViewPager();
+    }
+
+    @Override
+    protected MovieDetailContract.Presenter providePresenter() {
+        return presenter;
+    }
+
+    @Override
+    protected int getResourceView() {
+        return R.layout.fragment_movie_detail;
+    }
+
+    private String getMovieYear(Movie movie) {
+        return movie.getReleaseDate().substring(0, 4);
+    }
+
+    private void bindViews(Movie movie) {
         this.movie = movie;
 
         final DecimalFormat df = new DecimalFormat(".#");
 
         textViewRating.setText(df.format(movie.getVotesAverage()));
-        textViewStoryLineInput.setText(movie.getOverview());
-
-        final DateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy", getResources().getConfiguration().locale);
-        final DateFormat dateFormatIn = new SimpleDateFormat("yyyy-MM-dd", getResources().getConfiguration().locale);
-        try {
-            textViewReleaseDate.setText(dateFormat.format(dateFormatIn.parse(movie.getReleaseDate())));
-        } catch (ParseException e) {
-            logger.debug("", e);
-        }
 
         final String year = getMovieYear(movie);
         textViewReleaseYear.setText(year);
@@ -165,29 +186,63 @@ public class MovieDetailFragment extends BaseDialogFragment<MovieDetailContract.
         ratingBar.setRating((float) movie.getVotesAverage());
 
         picasso
-                .load(Utils.makePosterUrlFor(getContext(), movie.getPosterPath()))
+                .load(Utils.makeMoviePosterUrlFor(getContext(), movie.getPosterPath()))
                 .fit()
                 .transform(new RoundedCornersTransformation(10, 0))
                 .into(imageViewPoster);
 
         picasso
-                .load(Utils.makeBackDropUrlFor(getContext(), movie.getBackdropPath()))
+                .load(Utils.makeMovieBackDropUrlFor(getContext(), movie.getBackdropPath()))
                 .fit()
                 .centerCrop()
                 .into(imageViewBackdrop);
     }
 
-    private String getMovieYear(Movie movie) {
-        return movie.getReleaseDate().substring(0, 4);
+    private void setUpViewPager() {
+        if (viewPager.getAdapter() == null) {
+            viewPager.setAdapter(new MovieDetailFragmentPageAdapter(getChildFragmentManager()));
+            tabLayout.setupWithViewPager(viewPager);
+            viewPager.setCurrentItem(0);
+        }
     }
 
-    @Override
-    protected MovieDetailContract.Presenter providePresenter() {
-        return presenter;
-    }
+    private class MovieDetailFragmentPageAdapter extends FragmentPagerAdapter {
 
-    @Override
-    protected int getResourceView() {
-        return R.layout.fragment_movie_detail;
+        public MovieDetailFragmentPageAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return movieInfoFragmentLazy.get();
+                case 1:
+                    return new Fragment();
+                case 2:
+                    return new Fragment();
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return getResources().getString(R.string.info);
+                case 1:
+                    return getResources().getString(R.string.trailer);
+                case 2:
+                    return getResources().getString(R.string.review);
+                default:
+                    return null;
+            }
+        }
     }
 }

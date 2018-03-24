@@ -12,4 +12,8 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+    <style name="TabTextStyle">
+        <item name="android:textSize">@dimen/text_size_h1</item>
+    </style>
+
 </resources>

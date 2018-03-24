@@ -11,4 +11,12 @@
     <string name="most_popular">Most popular</string>
     <string name="highest_rated">Highest-rated</string>
     <string name="moive_backdrop_size" translatable="false">w780</string>
+    <string name="runtime">Runtime:</string>
+    <string name="genre">Genre:</string>
+    <string name="language">Language:</string>
+    <string name="director">Director</string>
+    <string name="the_cast">The Cast</string>
+    <string name="info">Info</string>
+    <string name="trailer">Trailer</string>
+    <string name="review">Review</string>
 </resources>

@@ -57,7 +57,12 @@ public abstract class BaseRepository<T extends RealmObject, K extends KeyValueHo
 
     @Override
     public Observable<T> getDataAsObservable(K k, boolean sync) {
-        return sync ? getAndSaveAsObservable(k) : getLocalDataSource().getDataAsObservable(k);
+        return sync ? getAndSaveAsObservable(k) : getLocalDataSource().getDataAsObservable(k)
+                .onErrorResumeNext(throwable -> {
+                    logger.debug("", throwable);
+                    return Observable.empty();
+                })
+                .concatWith(getAndSaveAsObservable(k));
     }
 
     @Override
