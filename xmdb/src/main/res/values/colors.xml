@@ -8,4 +8,5 @@
     <color name="colorSecondaryInactive">#FFAEAE</color>
     <color name="colorDefaultRipple">#78f45a5a</color>
     <color name="colorDefaultPressed">#64ffaeae</color>
+    <color name="grey_100">#F5F5F5</color>
 </resources>

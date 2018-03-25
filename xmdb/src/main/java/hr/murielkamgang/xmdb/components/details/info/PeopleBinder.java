@@ -14,7 +14,6 @@ import hr.murielkamgang.xmdb.R;
 import hr.murielkamgang.xmdb.components.di.ActivityScoped;
 import hr.murielkamgang.xmdb.data.model.credits.People;
 import hr.murielkamgang.xmdb.util.Utils;
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 /**
  * Created by muriel on 3/24/18.
@@ -46,11 +45,7 @@ class PeopleBinder {
 
         if (people != null) {
             textViewPeopleName.setText(people.getName());
-            picasso.load(Utils.makePeoplePosterUrlFor(imageViewPeople.getContext(), people.getProfilePath()))
-                    .fit()
-                    .centerCrop()
-                    .transform(new RoundedCornersTransformation(10, 0))
-                    .into(imageViewPeople);
+            Utils.loadPeople(imageViewPeople, picasso, people);
         }
     }
 

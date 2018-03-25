@@ -1,5 +1,7 @@
 package hr.murielkamgang.xmdb.components.home;
 
+import com.squareup.picasso.Picasso;
+
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
@@ -34,6 +36,12 @@ public abstract class HomeModule {
         return new MovieRemoteSource(retrofit, BuildConfig.API_KEY);
     }
 
+    @ActivityScoped
+    @Provides
+    static HomeAdapter provideHomeAdapter(Picasso picasso) {
+        return new HomeAdapter(picasso);
+    }
+
     @FragmentScoped
     @ContributesAndroidInjector
     abstract HomeFragment homeFragment();
@@ -45,4 +53,5 @@ public abstract class HomeModule {
     @ActivityScoped
     @Binds
     abstract Repository<Movie, BaseKVH> provideMovieRepository(MovieRepository movieRepository);
+
 }

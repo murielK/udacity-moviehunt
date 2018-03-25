@@ -1,4 +1,4 @@
-package hr.murielkamgang.xmdb.components.details;
+package hr.murielkamgang.xmdb.components.details.base;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ import io.reactivex.disposables.Disposable;
  */
 public class BaseMovieDetailPresenter<V extends BaseMovieDetailsContract.View> implements BaseMovieDetailsContract.Presenter<V> {
 
-    protected final Logger logger = LoggerFactory.getLogger(MovieDetailPresenter.class);
+    protected final Logger logger = LoggerFactory.getLogger(BaseMovieDetailPresenter.class);
     protected final int movieId;
     protected final Repository<Movie, BaseKVH> movieRepository;
     protected V view;

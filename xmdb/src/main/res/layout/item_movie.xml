@@ -6,7 +6,8 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/home_grid_img_height" />
+        android:layout_height="@dimen/home_grid_img_height"
+        android:background="@drawable/default_img_loading" />
 
     <View
         android:id="@+id/view"

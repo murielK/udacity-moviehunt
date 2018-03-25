@@ -1,9 +1,6 @@
 package hr.murielkamgang.xmdb.components.home;
 
-import java.util.List;
-
-import hr.murielkamgang.xmdb.components.base.AdapterView;
-import hr.murielkamgang.xmdb.components.base.BasePresenter;
+import hr.murielkamgang.xmdb.components.base.BaseContentListContract;
 import hr.murielkamgang.xmdb.data.model.movie.Movie;
 
 /**
@@ -12,19 +9,13 @@ import hr.murielkamgang.xmdb.data.model.movie.Movie;
 
 interface HomeContract {
 
-    interface View extends AdapterView {
-
-        void onItemLoaded(List<Movie> movies);
-
-        void swipeToRefresh(boolean refreshing);
+    interface View extends BaseContentListContract.View<Movie> {
 
         void updateToolbarName(int nameResId);
 
     }
 
-    interface Presenter extends BasePresenter<View> {
-
-        void load();
+    interface Presenter extends BaseContentListContract.Presenter<View> {
 
         void delegatePopular();
 

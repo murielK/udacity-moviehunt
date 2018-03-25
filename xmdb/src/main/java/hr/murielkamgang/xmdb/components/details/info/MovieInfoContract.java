@@ -1,6 +1,6 @@
 package hr.murielkamgang.xmdb.components.details.info;
 
-import hr.murielkamgang.xmdb.components.details.BaseMovieDetailsContract;
+import hr.murielkamgang.xmdb.components.details.base.BaseMovieDetailsContract;
 import hr.murielkamgang.xmdb.data.model.credits.Credits;
 
 /**

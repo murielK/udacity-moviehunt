@@ -19,4 +19,5 @@
     <string name="info">Info</string>
     <string name="trailer">Trailer</string>
     <string name="review">Review</string>
+    <string name="youtube_thumbnail_url" translatable="true">http://img.youtube.com/vi/%s/0.jpg</string>
 </resources>

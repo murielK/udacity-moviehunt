@@ -32,9 +32,9 @@ import dagger.Lazy;
 import hr.murielkamgang.xmdb.R;
 import hr.murielkamgang.xmdb.components.base.BaseDialogFragment;
 import hr.murielkamgang.xmdb.components.details.info.MovieInfoFragment;
+import hr.murielkamgang.xmdb.components.details.trailers.TrailerFragment;
 import hr.murielkamgang.xmdb.data.model.movie.Movie;
 import hr.murielkamgang.xmdb.util.Utils;
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 /**
  * Created by muriel on 3/10/18.
@@ -51,6 +51,9 @@ public class MovieDetailFragment extends BaseDialogFragment<MovieDetailContract.
 
     @Inject
     Lazy<MovieInfoFragment> movieInfoFragmentLazy;
+
+    @Inject
+    Lazy<TrailerFragment> trailerFragmentLazy;
 
     @BindView(R.id.imageViewPoster)
     ImageView imageViewPoster;
@@ -185,17 +188,9 @@ public class MovieDetailFragment extends BaseDialogFragment<MovieDetailContract.
 
         ratingBar.setRating((float) movie.getVotesAverage());
 
-        picasso
-                .load(Utils.makeMoviePosterUrlFor(getContext(), movie.getPosterPath()))
-                .fit()
-                .transform(new RoundedCornersTransformation(10, 0))
-                .into(imageViewPoster);
+        Utils.loadMoviePoster(imageViewPoster, picasso, movie);
 
-        picasso
-                .load(Utils.makeMovieBackDropUrlFor(getContext(), movie.getBackdropPath()))
-                .fit()
-                .centerCrop()
-                .into(imageViewBackdrop);
+        Utils.loadMovieBackDrop(imageViewBackdrop, picasso, movie);
     }
 
     private void setUpViewPager() {
@@ -218,7 +213,7 @@ public class MovieDetailFragment extends BaseDialogFragment<MovieDetailContract.
                 case 0:
                     return movieInfoFragmentLazy.get();
                 case 1:
-                    return new Fragment();
+                    return trailerFragmentLazy.get();
                 case 2:
                     return new Fragment();
                 default:

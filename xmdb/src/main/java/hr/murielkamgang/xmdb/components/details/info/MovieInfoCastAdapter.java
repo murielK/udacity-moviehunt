@@ -6,8 +6,6 @@ import android.view.ViewGroup;
 
 import com.squareup.picasso.Picasso;
 
-import javax.inject.Inject;
-
 import hr.murielkamgang.xmdb.R;
 import hr.murielkamgang.xmdb.components.base.BaseRecyclerViewAdapter;
 import hr.murielkamgang.xmdb.data.model.credits.Cast;
@@ -17,11 +15,10 @@ import hr.murielkamgang.xmdb.data.model.credits.Cast;
  */
 public class MovieInfoCastAdapter extends BaseRecyclerViewAdapter<Cast, BaseRecyclerViewAdapter.ItemBaseVH> {
 
-    @Inject
-    Picasso picasso;
+    private final Picasso picasso;
 
-    @Inject
-    public MovieInfoCastAdapter() {
+    public MovieInfoCastAdapter(Picasso picasso) {
+        this.picasso = picasso;
     }
 
     @Override

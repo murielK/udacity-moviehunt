@@ -7,33 +7,26 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import hr.murielkamgang.xmdb.R;
 import hr.murielkamgang.xmdb.components.base.BaseRecyclerViewAdapter;
-import hr.murielkamgang.xmdb.components.di.ActivityScoped;
 import hr.murielkamgang.xmdb.data.model.movie.Movie;
 import hr.murielkamgang.xmdb.util.Utils;
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 /**
  * Created by muriel on 3/4/18.
  */
-
-@ActivityScoped
 class HomeAdapter extends BaseRecyclerViewAdapter<Movie, BaseRecyclerViewAdapter.ItemBaseVH> {
 
-    @Inject
-    Picasso picasso;
+    private final Picasso picasso;
 
-    @Inject
-    HomeAdapter() {
+    HomeAdapter(Picasso picasso) {
+        this.picasso = picasso;
     }
 
     @Override
     public ItemBaseVH onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MovieVH(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home, parent, false));
+        return new MovieVH(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie, parent, false));
     }
 
     class MovieVH extends ItemBaseVH {
@@ -54,11 +47,7 @@ class HomeAdapter extends BaseRecyclerViewAdapter<Movie, BaseRecyclerViewAdapter
 
         @Override
         protected void performBinding(Movie movie) {
-            picasso
-                    .load(Utils.makeMoviePosterUrlFor(imageView.getContext(), movie.getPosterPath()))
-                    .fit()
-                    .transform(new RoundedCornersTransformation(10, 0))
-                    .into(imageView);
+            Utils.loadMoviePoster(imageView, picasso, movie);
         }
     }
 }

@@ -1,4 +1,4 @@
-package hr.murielkamgang.xmdb.components.details;
+package hr.murielkamgang.xmdb.components.details.base;
 
 import hr.murielkamgang.xmdb.components.base.BaseDialogView;
 import hr.murielkamgang.xmdb.components.base.BasePresenter;

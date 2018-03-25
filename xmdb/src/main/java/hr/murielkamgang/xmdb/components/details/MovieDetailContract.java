@@ -1,5 +1,7 @@
 package hr.murielkamgang.xmdb.components.details;
 
+import hr.murielkamgang.xmdb.components.details.base.BaseMovieDetailsContract;
+
 /**
  * Created by muriel on 3/10/18.
  */

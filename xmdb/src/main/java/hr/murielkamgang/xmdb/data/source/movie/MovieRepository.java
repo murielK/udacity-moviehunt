@@ -69,7 +69,7 @@ public class MovieRepository extends BaseRepository<Movie, BaseKVH> implements M
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<List<Movie>> getPopularAsObservable(boolean sync) {// Sync true will clean the database first prior adding new movies
+    public Observable<List<Movie>> getPopularAsObservable(boolean sync) {// Sync true will clean the database first prior adding new results
         return sync ? getPopularAndSaveAsObservable(true) : movieLocalSource.getPopularAsObservable()
                 .onErrorResumeNext(throwable -> {
                     logger.debug("", throwable);
@@ -79,7 +79,7 @@ public class MovieRepository extends BaseRepository<Movie, BaseKVH> implements M
                 .concatWith(getPopularAndSaveAsObservable(false));
     }
 
-    public Observable<List<Movie>> getTopRatedAsObservable(boolean sync) {// Sync true will clean the database first prior adding new movies
+    public Observable<List<Movie>> getTopRatedAsObservable(boolean sync) {// Sync true will clean the database first prior adding new results
         return sync ? getTopRatedAndSaveAsObservable(true) : movieLocalSource.getTopRatedAsObservable()
                 .onErrorResumeNext(throwable -> {
                     logger.debug("", throwable);

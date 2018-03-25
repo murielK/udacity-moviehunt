@@ -1,8 +1,13 @@
 package hr.murielkamgang.xmdb.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +17,12 @@ import java.util.List;
 import hr.murielkamgang.xmdb.R;
 import hr.murielkamgang.xmdb.components.base.AdapterView;
 import hr.murielkamgang.xmdb.components.base.BaseView;
+import hr.murielkamgang.xmdb.data.model.credits.People;
+import hr.murielkamgang.xmdb.data.model.movie.Movie;
+import hr.murielkamgang.xmdb.data.model.video.Video;
 import io.realm.OrderedCollectionChangeSet;
 import io.realm.RealmObject;
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 /**
  * Created by muriel on 3/4/18.
@@ -89,6 +98,10 @@ public class Utils {
         }
     }
 
+    public static String makeYoutThumbnailFor(Context context, String key) {
+        return context.getResources().getString(R.string.youtube_thumbnail_url, key);
+    }
+
     public static String makeMoviePosterUrlFor(Context context, String path) {
         return getImgBaseUrl(context) + context.getResources().getString(R.string.moive_poster_size) + path;
     }
@@ -103,5 +116,48 @@ public class Utils {
 
     private static String getImgBaseUrl(Context context) {
         return context.getResources().getString(R.string.base_poster_url);
+    }
+
+    public static void watchYoutubeVideo(Context context, String key) {
+        final Intent youtubeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + key));
+        if (youtubeIntent.resolveActivity(context.getPackageManager()) != null) {
+            context.startActivity(youtubeIntent);
+        } else {
+            context.startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://www.youtube.com/watch?v=" + key)));
+        }
+    }
+
+    public static void loadMoviePoster(ImageView target, Picasso picasso, Movie movie) {
+        loadImageFit(target, picasso, makeMoviePosterUrlFor(target.getContext(), movie.getPosterPath()));
+    }
+
+    public static void loadMovieBackDrop(ImageView target, Picasso picasso, Movie movie) {
+        loadImageFitCenterCrop(target, picasso, makeMovieBackDropUrlFor(target.getContext(), movie.getPosterPath()));
+    }
+
+    public static void loadVideo(ImageView target, Picasso picasso, Video video) {
+        loadImageFitCenterCrop(target, picasso, makeYoutThumbnailFor(target.getContext(), video.getKey()));
+    }
+
+    public static void loadPeople(ImageView target, Picasso picasso, People people) {
+        loadImageFitCenterCrop(target, picasso, makePeoplePosterUrlFor(target.getContext(), people.getProfilePath()));
+    }
+
+    public static void loadImageFit(ImageView target, Picasso picasso, String path) {
+        picasso
+                .load(path)
+                .fit()
+                .transform(new RoundedCornersTransformation(target.getContext().getResources().getDimensionPixelSize(R.dimen.default_rounded_radius), 0))
+                .into(target);
+    }
+
+    public static void loadImageFitCenterCrop(ImageView target, Picasso picasso, String path) {
+        picasso
+                .load(path)
+                .fit()
+                .centerCrop()
+                .transform(new RoundedCornersTransformation(target.getContext().getResources().getDimensionPixelSize(R.dimen.default_rounded_radius), 0))
+                .into(target);
     }
 }

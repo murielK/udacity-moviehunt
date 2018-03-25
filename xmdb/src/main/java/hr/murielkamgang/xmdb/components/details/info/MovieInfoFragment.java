@@ -121,7 +121,7 @@ public class MovieInfoFragment extends BaseDialogFragment<MovieInfoContract.View
     private void initCastRecyclerView() {
         if (recyclerView.getAdapter() == null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-            recyclerView.addItemDecoration(new AdapterItemDivider(getContext(), getResources().getDimensionPixelOffset(R.dimen.home_grid_spacing), AdapterItemDivider.ORIENTATION_HORIZONTAL));
+            recyclerView.addItemDecoration(new AdapterItemDivider(getContext(), getResources().getDimensionPixelOffset(R.dimen.recycler_view_spacing), AdapterItemDivider.ORIENTATION_HORIZONTAL));
             recyclerView.setAdapter(movieInfoCastAdapter);
         }
     }

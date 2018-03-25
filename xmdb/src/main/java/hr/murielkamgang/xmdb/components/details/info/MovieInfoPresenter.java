@@ -2,7 +2,7 @@ package hr.murielkamgang.xmdb.components.details.info;
 
 import javax.inject.Inject;
 
-import hr.murielkamgang.xmdb.components.details.BaseMovieDetailPresenter;
+import hr.murielkamgang.xmdb.components.details.base.BaseMovieDetailPresenter;
 import hr.murielkamgang.xmdb.data.model.credits.Credits;
 import hr.murielkamgang.xmdb.data.model.movie.Movie;
 import hr.murielkamgang.xmdb.data.source.Repository;

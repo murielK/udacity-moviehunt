@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="home_grid_spacing">8dp</dimen>
+    <dimen name="recycler_view_spacing">8dp</dimen>
+    <dimen name="recycler_view_spacing_2">10dp</dimen>
     <dimen name="home_grid_img_height">160dp</dimen>
     <dimen name="app_bar_height">300dp</dimen>
     <dimen name="detail_img_width">120dp</dimen>
@@ -13,6 +14,7 @@
     <dimen name="people_img_height">90dp</dimen>
     <dimen name="text_size_h3">12sp</dimen>
     <dimen name="text_size_h4">10sp</dimen>
-    <dimen name="trailer_img_height">140dp</dimen>
+    <dimen name="trailer_img_height">180dp</dimen>
     <dimen name="recycler_view_movie_info_height">160dp</dimen>
+    <dimen name="default_rounded_radius">3dp</dimen>
 </resources>
