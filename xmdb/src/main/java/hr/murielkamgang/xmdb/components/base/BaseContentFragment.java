@@ -21,6 +21,7 @@ public abstract class BaseContentFragment<T, V extends BaseContentListContract.V
     @Nullable
     @BindView(R.id.recyclerView)
     protected RecyclerView recyclerView;
+    @Nullable
     @BindView(R.id.swipeRefreshLayout)
     protected SwipeRefreshLayout swipeRefreshLayout;
 
@@ -42,15 +43,18 @@ public abstract class BaseContentFragment<T, V extends BaseContentListContract.V
     @Override
     protected void onPostViewCreate(View view) {
         final Resources res = getResources();
-        swipeRefreshLayout.setColorSchemeColors(res.getColor(R.color.colorPrimary),
-                res.getColor(R.color.colorSecondaryInactive));
 
-        final P p = providePresenter();
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            if (p != null) {
-                p.load();
-            }
-        });
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setColorSchemeColors(res.getColor(R.color.colorPrimary),
+                    res.getColor(R.color.colorSecondaryInactive));
+
+            final P p = providePresenter();
+            swipeRefreshLayout.setOnRefreshListener(() -> {
+                if (p != null) {
+                    p.load();
+                }
+            });
+        }
 
         initRecyclerView();
 

@@ -35,7 +35,7 @@ public abstract class BaseContentListPresenter<T, V extends BaseContentListContr
 
     @Override
     public void load() {
-        internalLoad(true);
+        internalLoad(false);
 
     }
 

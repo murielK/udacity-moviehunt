@@ -43,10 +43,12 @@ public class TrailerFragment extends BaseContentFragment<Video, TrailerContract.
 
     @Override
     protected void initRecyclerView() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(new AdapterItemDivider(getContext(), getResources().getDimensionPixelOffset(R.dimen.recycler_view_spacing_2), AdapterItemDivider.ORIENTATION_VERTICAL));
         recyclerView.setAdapter(trailerAdapter);
         recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setHasFixedSize(true);
     }
 
     @Override

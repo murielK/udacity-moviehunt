@@ -42,9 +42,12 @@ public class ImageFragment extends BaseContentFragment<Image, ImageContract.View
     @Override
     protected void initRecyclerView() {
         final int spanCount = getResources().getInteger(R.integer.image_details_span_count);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), spanCount));
+        final GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), spanCount);
+        gridLayoutManager.setAutoMeasureEnabled(true);
+        recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(imageAdapter);
-        recyclerView.setNestedScrollingEnabled(true);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, getResources().getDimensionPixelSize(R.dimen.recycler_view_spacing), true));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
     }
 }

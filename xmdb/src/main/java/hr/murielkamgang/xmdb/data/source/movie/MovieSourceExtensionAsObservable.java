@@ -3,6 +3,7 @@ package hr.murielkamgang.xmdb.data.source.movie;
 import java.util.List;
 
 import hr.murielkamgang.xmdb.data.model.movie.Movie;
+import hr.murielkamgang.xmdb.data.source.base.BaseKVH;
 import io.reactivex.Observable;
 
 /**
@@ -13,4 +14,6 @@ public interface MovieSourceExtensionAsObservable {
     Observable<List<Movie>> getPopularAsObservable();
 
     Observable<List<Movie>> getTopRatedAsObservable();
+
+    Boolean addMovieToFavoriteAsObservable(BaseKVH baseKVH, boolean favorite);
 }

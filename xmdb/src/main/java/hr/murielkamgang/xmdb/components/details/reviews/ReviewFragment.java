@@ -42,10 +42,13 @@ public class ReviewFragment extends BaseContentFragment<Review, ReviewContract.V
 
     @Override
     protected void initRecyclerView() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setAutoMeasureEnabled(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(new AdapterItemDivider(getContext(), getResources().getDrawable(R.drawable.default_drawable_divider), AdapterItemDivider.ORIENTATION_VERTICAL));
         recyclerView.setAdapter(reviewAdapter);
         recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setHasFixedSize(false);
     }
 
     @Override

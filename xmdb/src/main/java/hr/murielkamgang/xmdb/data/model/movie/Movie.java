@@ -50,6 +50,7 @@ public class Movie extends RealmObject {
     private double votesAverage;
     @SerializedName("vote_count")
     private int voteCount;
+    private RealmList<MovieTag> tags;
 
     public int getId() {
         return id;
@@ -251,6 +252,55 @@ public class Movie extends RealmObject {
         this.voteCount = voteCount;
     }
 
+    public RealmList<MovieTag> getTags() {
+        return tags;
+    }
+
+    public void setTags(RealmList<MovieTag> tags) {
+        this.tags = tags;
+    }
+
+    public void addTag(String tag) {
+        if (tags == null) {
+            tags = new RealmList<>();
+        }
+
+        final MovieTag movieTag = new MovieTag();
+        movieTag.setTag(tag);
+
+        if (!tags.contains(movieTag)) {
+            tags.add(movieTag);
+        }
+    }
+
+    public boolean remoteTag(String tag) {
+        if (tags == null) {
+            return false;
+        }
+
+        final MovieTag movieTag = new MovieTag();
+        movieTag.setTag(tag);
+        return tags.remove(movieTag);
+    }
+
+    public void addTag(MovieTag tag) {
+        if (tags == null) {
+            tags = new RealmList<>();
+        }
+
+        if (!tags.contains(tag)) {
+            tags.add(tag);
+        }
+    }
+
+    public boolean remoteTag(MovieTag tag) {
+        if (tags == null) {
+            return false;
+        }
+
+        return tags.remove(tag);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -293,7 +343,8 @@ public class Movie extends RealmObject {
         if (releaseDate != null ? !releaseDate.equals(movie.releaseDate) : movie.releaseDate != null)
             return false;
         if (status != null ? !status.equals(movie.status) : movie.status != null) return false;
-        return tagline != null ? tagline.equals(movie.tagline) : movie.tagline == null;
+        if (tagline != null ? !tagline.equals(movie.tagline) : movie.tagline != null) return false;
+        return tags != null ? tags.equals(movie.tags) : movie.tags == null;
     }
 
     @Override
@@ -327,6 +378,7 @@ public class Movie extends RealmObject {
         temp = Double.doubleToLongBits(votesAverage);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + voteCount;
+        result = 31 * result + (tags != null ? tags.hashCode() : 0);
         return result;
     }
 
@@ -358,6 +410,7 @@ public class Movie extends RealmObject {
                 ", video=" + video +
                 ", votesAverage=" + votesAverage +
                 ", voteCount=" + voteCount +
+                ", tags=" + tags +
                 '}';
     }
 }

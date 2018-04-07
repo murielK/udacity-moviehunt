@@ -54,6 +54,11 @@ public class MovieRepository extends BaseRepository<Movie, BaseKVH> implements M
     }
 
     @Override
+    public Boolean addMovieToFavoriteAsObservable(BaseKVH baseKVH, boolean favorite) {
+        return movieLocalSource.addMovieToFavoriteAsObservable(baseKVH, false);
+    }
+
+    @Override
     public Observable<List<Movie>> getPopularAsObservable(int page) {
         return movieRemoteSource.getPopularAsObservable(page)
                 .subscribeOn(Schedulers.io())

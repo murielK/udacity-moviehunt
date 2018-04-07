@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 import hr.murielkamgang.xmdb.data.model.movie.Movie;
+import hr.murielkamgang.xmdb.data.model.movie.MovieTag;
 import hr.murielkamgang.xmdb.data.source.DataSourceException;
 import hr.murielkamgang.xmdb.data.source.base.BaseKVH;
 import hr.murielkamgang.xmdb.data.source.base.BaseRemoteDataSource;
@@ -38,7 +39,9 @@ public class MovieRemoteSource extends BaseRemoteDataSource<Movie, BaseKVH> impl
     @Override
     public List<Movie> getPopular(int page) {
         try {
-            return movieApi.getPopular(apiKey, page).execute().body().results;
+            final List<Movie> results = movieApi.getPopular(apiKey, page).execute().body().results;
+            tagMovies(results, MovieTag.TAG_POPULAR);
+            return results;
         } catch (IOException e) {
             logger.debug("", e);
 
@@ -49,7 +52,9 @@ public class MovieRemoteSource extends BaseRemoteDataSource<Movie, BaseKVH> impl
     @Override
     public List<Movie> getTopRated(int page) {
         try {
-            return movieApi.getTopRated(apiKey, page).execute().body().results;
+            final List<Movie> results = movieApi.getTopRated(apiKey, page).execute().body().results;
+            tagMovies(results, MovieTag.TAG_TOP_RATED);
+            return results;
         } catch (NullPointerException | IOException e) {
             logger.debug("", e);
 
@@ -94,6 +99,11 @@ public class MovieRemoteSource extends BaseRemoteDataSource<Movie, BaseKVH> impl
     }
 
     @Override
+    public Boolean addMovieToFavorite(BaseKVH baseKVH, boolean favorite) {
+        throw new IllegalStateException("not implemented");
+    }
+
+    @Override
     public Observable<List<Movie>> getPopularAsObservable() {
         return Observable.fromCallable(this::getPopular);
     }
@@ -101,6 +111,17 @@ public class MovieRemoteSource extends BaseRemoteDataSource<Movie, BaseKVH> impl
     @Override
     public Observable<List<Movie>> getTopRatedAsObservable() {
         return Observable.fromCallable(this::getTopRated);
+    }
+
+    private void tagMovies(List<Movie> movies, String tag) {
+        for (final Movie m : movies) {
+            m.addTag(tag);
+        }
+    }
+
+    @Override
+    public Boolean addMovieToFavoriteAsObservable(BaseKVH baseKVH, boolean favorite) {
+        throw new IllegalStateException("not implemented");
     }
 
     interface MovieApi {

@@ -49,14 +49,17 @@ public abstract class BaseLocalDataSource<T extends RealmObject, K extends KeyVa
 
     @Override
     public T getData(@NonNull K k) {
-        final Realm realm = Realm.getDefaultInstance();
-        final T t = getData(realm, k);
-        if (Looper.myLooper() != Looper.getMainLooper()) {
-            try {
+        T t = null;
+        Realm realm = null;
+        try {
+            realm = Realm.getDefaultInstance();
+            t = getData(realm, k);
+        } catch (Exception e) {
+            if (realm != null && Looper.myLooper() != Looper.getMainLooper()) {
                 realm.close();
-            } catch (Exception e) {
-                logger.debug("", e);
             }
+
+            logger.debug("", e);
         }
 
         return t;
@@ -88,14 +91,17 @@ public abstract class BaseLocalDataSource<T extends RealmObject, K extends KeyVa
 
     @Override
     public List<T> getAllData() {
-        final Realm realm = Realm.getDefaultInstance();
-        final List<T> ts = RealmHelper.findAll(realm, tClass);
-        if (Looper.myLooper() != Looper.getMainLooper()) {
-            try {
+        List<T> ts = null;
+        Realm realm = null;
+        try {
+            realm = Realm.getDefaultInstance();
+            ts = RealmHelper.findAll(realm, tClass);
+        } catch (Exception e) {
+            if (realm != null && Looper.myLooper() != Looper.getMainLooper()) {
                 realm.close();
-            } catch (Exception e) {
-                logger.debug("", e);
             }
+
+            logger.debug("", e);
         }
 
         return ts;
@@ -131,14 +137,17 @@ public abstract class BaseLocalDataSource<T extends RealmObject, K extends KeyVa
 
     @Override
     public List<T> getAllData(K k) {
-        final Realm realm = Realm.getDefaultInstance();
-        final List<T> ts = getAllData(realm, k);
-        if (Looper.myLooper() != Looper.getMainLooper()) {
-            try {
+        List<T> ts = null;
+        Realm realm = null;
+        try {
+            realm = Realm.getDefaultInstance();
+            ts = getAllData(realm, k);
+        } catch (Exception e) {
+            if (realm != null && Looper.myLooper() != Looper.getMainLooper()) {
                 realm.close();
-            } catch (Exception e) {
-                logger.debug("", e);
             }
+
+            logger.debug("", e);
         }
 
         return ts;

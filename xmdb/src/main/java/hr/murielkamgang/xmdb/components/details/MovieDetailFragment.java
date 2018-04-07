@@ -11,7 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.view.ViewPager;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -31,6 +31,7 @@ import butterknife.BindView;
 import dagger.Lazy;
 import hr.murielkamgang.xmdb.R;
 import hr.murielkamgang.xmdb.components.base.BaseDialogFragment;
+import hr.murielkamgang.xmdb.components.base.BaseFragment;
 import hr.murielkamgang.xmdb.components.details.image.ImageFragment;
 import hr.murielkamgang.xmdb.components.details.info.MovieInfoFragment;
 import hr.murielkamgang.xmdb.components.details.reviews.ReviewFragment;
@@ -43,6 +44,7 @@ import hr.murielkamgang.xmdb.util.Utils;
  */
 public class MovieDetailFragment extends BaseDialogFragment<MovieDetailContract.View, MovieDetailContract.Presenter> implements MovieDetailContract.View {
 
+    private static final String BUNDLE_CURRENT_FRAGMENT_TAG = "BUNDLE_CURRENT_FRAGMENT_TAG";
     private final Logger logger = LoggerFactory.getLogger(MovieDetailFragment.class);
 
     @Inject
@@ -93,11 +95,13 @@ public class MovieDetailFragment extends BaseDialogFragment<MovieDetailContract.
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;
 
-    @BindView(R.id.viewPager)
-    ViewPager viewPager;
+    private Movie movie;
 
-    Movie movie;
+    private String currentTag;
 
+    private BaseFragment currentFragment;
+
+    private ArrayMap<String, Lazy<? extends BaseFragment>> arrayMapTagFragment;
 
     @Inject
     public MovieDetailFragment() {
@@ -154,16 +158,35 @@ public class MovieDetailFragment extends BaseDialogFragment<MovieDetailContract.
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (presenter != null) {
+
+        arrayMapTagFragment = new ArrayMap<>();
+        arrayMapTagFragment.put(getResources().getString(R.string.info), movieInfoFragmentLazy);
+        arrayMapTagFragment.put(getResources().getString(R.string.trailer), trailerFragmentLazy);
+        arrayMapTagFragment.put(getResources().getString(R.string.review), reviewFragmentLazy);
+        arrayMapTagFragment.put(getResources().getString(R.string.photos), imageFragmentLazy);
+
+        if (savedInstanceState == null) {
             presenter.setView(this);
             presenter.load();
+
+        } else {
+            restoreInstanceState(savedInstanceState);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(BUNDLE_CURRENT_FRAGMENT_TAG, currentTag);
+
     }
 
     @Override
     public void onMovieLoaded(Movie movie) {
         bindViews(movie);
-        setUpViewPager();
+        if (tabLayout.getTabCount() == 0) {
+            setUpTabs();
+        }
     }
 
     @Override
@@ -201,12 +224,71 @@ public class MovieDetailFragment extends BaseDialogFragment<MovieDetailContract.
         Utils.loadMovieBackDrop(imageViewBackdrop, picasso, movie);
     }
 
-    private void setUpViewPager() {
-        if (viewPager.getAdapter() == null) {
-            viewPager.setAdapter(new MovieDetailFragmentPageAdapter(getChildFragmentManager()));
-            tabLayout.setupWithViewPager(viewPager);
-            viewPager.setOffscreenPageLimit(4);
-            viewPager.setCurrentItem(0);
+    private void setUpTabs() {
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.info));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.trailer));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.photos));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.review));
+
+        tabLayout.getTabAt(0).select();
+        setCurrentTab(getString(R.string.info));
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                setCurrentTab(tab.getText().toString());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+    }
+
+    private void restoreInstanceState(Bundle savedInstanceState) {
+        currentTag = savedInstanceState.getString(BUNDLE_CURRENT_FRAGMENT_TAG);
+        setCurrentTab(currentTag);
+    }
+
+    private void setCurrentTab(String tag) {
+        currentTag = tag;
+
+        final FragmentManager fm = getChildFragmentManager();
+
+        final BaseFragment fragment = (BaseFragment) fm.findFragmentByTag(currentTag);
+
+        if (currentFragment != null && currentFragment == fragment) {
+            return;
+        } else if (currentFragment != null) {
+            fm
+                    .beginTransaction()
+                    .hide(currentFragment)
+                    .commit();
+        } else {//just in case there are some rogue fragment when the activity is recreate
+            for (final Fragment f : fm.getFragments()) {
+                if (fragment != f && f.isVisible()) {
+                    fm
+                            .beginTransaction()
+                            .hide(f)
+                            .commit();
+                }
+
+            }
+        }
+
+        currentFragment = fragment;
+        if (currentFragment == null) {
+            currentFragment = arrayMapTagFragment.get(currentTag).get();
+            fm.beginTransaction().add(R.id.container, currentFragment, currentTag).commit();
+        } else if (!currentFragment.isVisible()) {
+            fm.beginTransaction().show(currentFragment).commit();
         }
     }
 
