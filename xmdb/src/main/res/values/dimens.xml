@@ -17,4 +17,5 @@
     <dimen name="trailer_img_height">180dp</dimen>
     <dimen name="recycler_view_movie_info_height">160dp</dimen>
     <dimen name="default_rounded_radius">3dp</dimen>
+    <dimen name="item_image_height">120dp</dimen>
 </resources>

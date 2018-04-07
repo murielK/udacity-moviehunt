@@ -7,10 +7,18 @@ import dagger.Module;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import hr.murielkamgang.xmdb.BuildConfig;
+import hr.murielkamgang.xmdb.components.details.image.ImageAdapter;
+import hr.murielkamgang.xmdb.components.details.image.ImageContract;
+import hr.murielkamgang.xmdb.components.details.image.ImageFragment;
+import hr.murielkamgang.xmdb.components.details.image.ImagePresenter;
 import hr.murielkamgang.xmdb.components.details.info.MovieInfoCastAdapter;
 import hr.murielkamgang.xmdb.components.details.info.MovieInfoContract;
 import hr.murielkamgang.xmdb.components.details.info.MovieInfoFragment;
 import hr.murielkamgang.xmdb.components.details.info.MovieInfoPresenter;
+import hr.murielkamgang.xmdb.components.details.reviews.ReviewAdapter;
+import hr.murielkamgang.xmdb.components.details.reviews.ReviewContract;
+import hr.murielkamgang.xmdb.components.details.reviews.ReviewFragment;
+import hr.murielkamgang.xmdb.components.details.reviews.ReviewPresenter;
 import hr.murielkamgang.xmdb.components.details.trailers.TrailerAdapter;
 import hr.murielkamgang.xmdb.components.details.trailers.TrailerContract;
 import hr.murielkamgang.xmdb.components.details.trailers.TrailerFragment;
@@ -18,16 +26,24 @@ import hr.murielkamgang.xmdb.components.details.trailers.TrailerPresenter;
 import hr.murielkamgang.xmdb.components.di.ActivityScoped;
 import hr.murielkamgang.xmdb.components.di.FragmentScoped;
 import hr.murielkamgang.xmdb.data.model.credits.Credits;
+import hr.murielkamgang.xmdb.data.model.image.Image;
 import hr.murielkamgang.xmdb.data.model.movie.Movie;
+import hr.murielkamgang.xmdb.data.model.review.Review;
 import hr.murielkamgang.xmdb.data.model.video.Video;
 import hr.murielkamgang.xmdb.data.source.Repository;
 import hr.murielkamgang.xmdb.data.source.base.BaseKVH;
 import hr.murielkamgang.xmdb.data.source.credits.CreditsLocalSource;
 import hr.murielkamgang.xmdb.data.source.credits.CreditsRemoteSource;
 import hr.murielkamgang.xmdb.data.source.credits.CreditsRepository;
+import hr.murielkamgang.xmdb.data.source.image.ImageLocalSource;
+import hr.murielkamgang.xmdb.data.source.image.ImageRemoteSource;
+import hr.murielkamgang.xmdb.data.source.image.ImagesRepository;
 import hr.murielkamgang.xmdb.data.source.movie.MovieLocalSource;
 import hr.murielkamgang.xmdb.data.source.movie.MovieRemoteSource;
 import hr.murielkamgang.xmdb.data.source.movie.MovieRepository;
+import hr.murielkamgang.xmdb.data.source.review.ReviewLocalSource;
+import hr.murielkamgang.xmdb.data.source.review.ReviewRemoteSource;
+import hr.murielkamgang.xmdb.data.source.review.ReviewRepository;
 import hr.murielkamgang.xmdb.data.source.video.VideoLocalSource;
 import hr.murielkamgang.xmdb.data.source.video.VideoRemoteSource;
 import hr.murielkamgang.xmdb.data.source.video.VideoRepository;
@@ -94,6 +110,42 @@ public abstract class MovieDetailModule {
         return new TrailerAdapter(picasso);
     }
 
+    @ActivityScoped
+    @Provides
+    static ReviewLocalSource provideReviewLocalSource() {
+        return new ReviewLocalSource();
+    }
+
+    @ActivityScoped
+    @Provides
+    static ReviewRemoteSource provideReviewRemoteSource(Retrofit retrofit) {
+        return new ReviewRemoteSource(retrofit, BuildConfig.API_KEY);
+    }
+
+    @ActivityScoped
+    @Provides
+    static ReviewAdapter provideReviewAdapter() {
+        return new ReviewAdapter();
+    }
+
+    @ActivityScoped
+    @Provides
+    static ImageLocalSource provideImageLocalSource() {
+        return new ImageLocalSource();
+    }
+
+    @ActivityScoped
+    @Provides
+    static ImageRemoteSource provideImageRemoteSource(Retrofit retrofit) {
+        return new ImageRemoteSource(retrofit, BuildConfig.API_KEY);
+    }
+
+    @ActivityScoped
+    @Provides
+    static ImageAdapter provideImageAdapter(Picasso picasso) {
+        return new ImageAdapter(picasso);
+    }
+
     @FragmentScoped
     @ContributesAndroidInjector
     abstract MovieDetailFragment movieDetailFragment();
@@ -131,4 +183,29 @@ public abstract class MovieDetailModule {
     @ContributesAndroidInjector()
     abstract TrailerFragment trailerFragment();
 
+    //Review
+    @FragmentScoped
+    @ContributesAndroidInjector()
+    abstract ReviewFragment reviewFragment();
+
+    @ActivityScoped
+    @Binds
+    abstract ReviewContract.Presenter provideReviewPresenter(ReviewPresenter reviewPresenter);
+
+    @ActivityScoped
+    @Binds
+    abstract Repository<Review, BaseKVH> provideReviewRepository(ReviewRepository reviewRepository);
+
+    //Image
+    @FragmentScoped
+    @ContributesAndroidInjector()
+    abstract ImageFragment imageFragment();
+
+    @ActivityScoped
+    @Binds
+    abstract ImageContract.Presenter provideImagePresenter(ImagePresenter imagePresenter);
+
+    @ActivityScoped
+    @Binds
+    abstract Repository<Image, BaseKVH> provideImageRepository(ImagesRepository imagesRepository);
 }

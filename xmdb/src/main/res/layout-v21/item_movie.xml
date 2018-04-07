@@ -12,7 +12,7 @@
         android:layout_height="@dimen/home_grid_img_height" />
 
     <View
-        android:id="@+id/view"
+        android:id="@+id/clickView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/home_grid_img_height"
         android:background="@drawable/item_default_selector" />

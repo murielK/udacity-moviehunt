@@ -31,7 +31,9 @@ import butterknife.BindView;
 import dagger.Lazy;
 import hr.murielkamgang.xmdb.R;
 import hr.murielkamgang.xmdb.components.base.BaseDialogFragment;
+import hr.murielkamgang.xmdb.components.details.image.ImageFragment;
 import hr.murielkamgang.xmdb.components.details.info.MovieInfoFragment;
+import hr.murielkamgang.xmdb.components.details.reviews.ReviewFragment;
 import hr.murielkamgang.xmdb.components.details.trailers.TrailerFragment;
 import hr.murielkamgang.xmdb.data.model.movie.Movie;
 import hr.murielkamgang.xmdb.util.Utils;
@@ -54,6 +56,12 @@ public class MovieDetailFragment extends BaseDialogFragment<MovieDetailContract.
 
     @Inject
     Lazy<TrailerFragment> trailerFragmentLazy;
+
+    @Inject
+    Lazy<ReviewFragment> reviewFragmentLazy;
+
+    @Inject
+    Lazy<ImageFragment> imageFragmentLazy;
 
     @BindView(R.id.imageViewPoster)
     ImageView imageViewPoster;
@@ -197,13 +205,14 @@ public class MovieDetailFragment extends BaseDialogFragment<MovieDetailContract.
         if (viewPager.getAdapter() == null) {
             viewPager.setAdapter(new MovieDetailFragmentPageAdapter(getChildFragmentManager()));
             tabLayout.setupWithViewPager(viewPager);
+            viewPager.setOffscreenPageLimit(4);
             viewPager.setCurrentItem(0);
         }
     }
 
     private class MovieDetailFragmentPageAdapter extends FragmentPagerAdapter {
 
-        public MovieDetailFragmentPageAdapter(FragmentManager fm) {
+        private MovieDetailFragmentPageAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -213,9 +222,11 @@ public class MovieDetailFragment extends BaseDialogFragment<MovieDetailContract.
                 case 0:
                     return movieInfoFragmentLazy.get();
                 case 1:
-                    return trailerFragmentLazy.get();
+                    return imageFragmentLazy.get();
                 case 2:
-                    return new Fragment();
+                    return trailerFragmentLazy.get();
+                case 3:
+                    return reviewFragmentLazy.get();
                 default:
                     return null;
             }
@@ -223,7 +234,7 @@ public class MovieDetailFragment extends BaseDialogFragment<MovieDetailContract.
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
         @Override
@@ -232,8 +243,10 @@ public class MovieDetailFragment extends BaseDialogFragment<MovieDetailContract.
                 case 0:
                     return getResources().getString(R.string.info);
                 case 1:
-                    return getResources().getString(R.string.trailer);
+                    return getResources().getString(R.string.photos);
                 case 2:
+                    return getResources().getString(R.string.trailer);
+                case 3:
                     return getResources().getString(R.string.review);
                 default:
                     return null;

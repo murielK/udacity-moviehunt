@@ -33,7 +33,7 @@ class HomeAdapter extends BaseRecyclerViewAdapter<Movie, BaseRecyclerViewAdapter
 
         @BindView(R.id.imageView)
         ImageView imageView;
-        @BindView(R.id.view)
+        @BindView(R.id.clickView)
         View view;
 
         MovieVH(View itemView) {

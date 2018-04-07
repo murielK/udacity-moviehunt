@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="2dp"
+    android:background="@drawable/default_img_loading"
+    android:elevation="6dp">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/home_grid_img_height"
-        android:background="@drawable/default_img_loading" />
+        android:layout_height="@dimen/item_image_height" />
 
     <View
         android:id="@+id/clickView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/home_grid_img_height"
+        android:layout_height="@dimen/item_image_height"
         android:background="@drawable/item_default_selector" />
 </FrameLayout>

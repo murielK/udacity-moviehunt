@@ -6,12 +6,12 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/home_grid_img_height"
+        android:layout_height="@dimen/item_image_height"
         android:background="@drawable/default_img_loading" />
 
     <View
         android:id="@+id/clickView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/home_grid_img_height"
+        android:layout_height="@dimen/item_image_height"
         android:background="@drawable/item_default_selector" />
 </FrameLayout>

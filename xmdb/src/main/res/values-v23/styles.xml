@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppThemeTransparent" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorBlackTransparent</item>
+        <item name="colorPrimaryDark">@color/colorBlackTransparent</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>

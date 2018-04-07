@@ -1,12 +1,13 @@
 package hr.murielkamgang.xmdb.data.model.video;
 
+import hr.murielkamgang.xmdb.data.model.MovieId;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by muriel on 3/24/18.
  */
-public class Video extends RealmObject {
+public class Video extends RealmObject implements MovieId {
 
     @PrimaryKey
     private String id;

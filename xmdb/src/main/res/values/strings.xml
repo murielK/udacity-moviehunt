@@ -20,4 +20,6 @@
     <string name="trailer">Trailer</string>
     <string name="review">Review</string>
     <string name="youtube_thumbnail_url" translatable="true">http://img.youtube.com/vi/%s/0.jpg</string>
+    <string name="quote_content_wrapper">\"%s\"</string>
+    <string name="photos">Photos</string>
 </resources>

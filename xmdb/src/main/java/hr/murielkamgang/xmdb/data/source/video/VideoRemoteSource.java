@@ -10,6 +10,7 @@ import hr.murielkamgang.xmdb.data.model.video.Video;
 import hr.murielkamgang.xmdb.data.source.DataSourceException;
 import hr.murielkamgang.xmdb.data.source.base.BaseKVH;
 import hr.murielkamgang.xmdb.data.source.base.BaseRemoteDataSource;
+import hr.murielkamgang.xmdb.util.Utils;
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -35,9 +36,7 @@ public class VideoRemoteSource extends BaseRemoteDataSource<Video, BaseKVH> {
     public List<Video> getAllData(BaseKVH baseKVH) {
         try {
             final List<Video> results = videoApi.getVideoForMovie(baseKVH.getFieldValue(), apiKey).execute().body().results;
-            for (final Video video : results) {
-                video.setMovieId(baseKVH.getFieldValue());
-            }
+            Utils.updateIdFor(results, baseKVH.getFieldValue());
             return results;
         } catch (IOException e) {
             logger.debug("", e);

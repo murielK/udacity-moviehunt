@@ -2,4 +2,6 @@
 <resources>
     <dimen name="home_grid_img_height">220dp</dimen>
     <dimen name="app_bar_height">220dp</dimen>
+    <dimen name="item_image_height">200dp</dimen>
+    <integer name="image_details_span_count">3</integer>
 </resources>

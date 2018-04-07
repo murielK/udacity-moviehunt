@@ -17,7 +17,9 @@ import java.util.List;
 import hr.murielkamgang.xmdb.R;
 import hr.murielkamgang.xmdb.components.base.AdapterView;
 import hr.murielkamgang.xmdb.components.base.BaseView;
+import hr.murielkamgang.xmdb.data.model.MovieId;
 import hr.murielkamgang.xmdb.data.model.credits.People;
+import hr.murielkamgang.xmdb.data.model.image.Image;
 import hr.murielkamgang.xmdb.data.model.movie.Movie;
 import hr.murielkamgang.xmdb.data.model.video.Video;
 import io.realm.OrderedCollectionChangeSet;
@@ -31,6 +33,9 @@ import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 public class Utils {
 
     private static final Logger logger = LoggerFactory.getLogger(Utils.class);
+
+    private Utils() {
+    }
 
     public static boolean isConnected(BaseView baseView) {
         final Context context = baseView == null ? null : baseView.getContext();
@@ -136,6 +141,10 @@ public class Utils {
         loadImageFitCenterCrop(target, picasso, makeMovieBackDropUrlFor(target.getContext(), movie.getPosterPath()));
     }
 
+    public static void loadMovieBackDrop(ImageView target, Picasso picasso, Image image) {
+        loadImageFitCenterCrop(target, picasso, makeMovieBackDropUrlFor(target.getContext(), image.getFilePath()));
+    }
+
     public static void loadVideo(ImageView target, Picasso picasso, Video video) {
         loadImageFitCenterCrop(target, picasso, makeYoutThumbnailFor(target.getContext(), video.getKey()));
     }
@@ -159,5 +168,13 @@ public class Utils {
                 .centerCrop()
                 .transform(new RoundedCornersTransformation(target.getContext().getResources().getDimensionPixelSize(R.dimen.default_rounded_radius), 0))
                 .into(target);
+    }
+
+    public static void updateIdFor(List<? extends MovieId> list, int movieId) {
+        if (list != null) {
+            for (final MovieId m : list) {
+                m.setMovieId(movieId);
+            }
+        }
     }
 }

@@ -19,7 +19,7 @@ public class Movie extends RealmObject {
     @SerializedName("backdrop_path")
     private String backdropPath;
     @SerializedName("belongs_to_collection")
-    private String belongsToCollection;
+    private Collection belongsToCollection;
     private int budget;
     private RealmList<Extension> genres;
     private String homepage;
@@ -83,11 +83,11 @@ public class Movie extends RealmObject {
         this.backdropPath = backdropPath;
     }
 
-    public String getBelongsToCollection() {
+    public Collection getBelongsToCollection() {
         return belongsToCollection;
     }
 
-    public void setBelongsToCollection(String belongsToCollection) {
+    public void setBelongsToCollection(Collection belongsToCollection) {
         this.belongsToCollection = belongsToCollection;
     }
 
@@ -337,7 +337,7 @@ public class Movie extends RealmObject {
                 ", title='" + title + '\'' +
                 ", adult=" + adult +
                 ", backdropPath='" + backdropPath + '\'' +
-                ", belongsToCollection='" + belongsToCollection + '\'' +
+                ", belongsToCollection=" + belongsToCollection +
                 ", budget=" + budget +
                 ", genres=" + genres +
                 ", homepage='" + homepage + '\'' +
