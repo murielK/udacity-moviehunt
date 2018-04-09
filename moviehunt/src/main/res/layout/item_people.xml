@@ -10,8 +10,10 @@
         android:layout_width="@dimen/people_img_width"
         android:layout_height="@dimen/people_img_height"
         android:background="@drawable/default_img_loading"
+        app:layout_constraintBottom_toTopOf="@id/textViewPeopleName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,6 +28,7 @@
         android:maxLines="1"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/text_size_h4"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
