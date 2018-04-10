@@ -22,6 +22,7 @@ advancedVersioning {
 }
 
 def API_KEY
+def CONTENT_AUTHORITY ='"hr.murielkamgang.moviehunt.data"'
 def localProperties = file('../local.properties')
 if (localProperties.exists() && localProperties.canRead()) {
     Properties prop = new Properties()
@@ -37,16 +38,18 @@ android {
     compileSdkVersion 27
 
     defaultConfig {
-        applicationId "hr.murielkamgang.xmdb"
+        applicationId "hr.murielkamgang.moviehunt"
         minSdkVersion 15
         targetSdkVersion 27
         versionCode advancedVersioning.versionCode
         versionName advancedVersioning.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "API_KEY", API_KEY)
-
+        buildConfigField "String", "API_KEY", API_KEY
+        buildConfigField "String", "CONTENT_AUTHORITY", CONTENT_AUTHORITY
+        resValue "string", "CONTENT_AUTHORITY", CONTENT_AUTHORITY
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -65,10 +68,12 @@ android {
     lintOptions {
         abortOnError false
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     configurations.all {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
     }

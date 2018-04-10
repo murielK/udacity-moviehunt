@@ -1,5 +1,7 @@
 package hr.murielkamgang.moviehunt.components.home;
 
+import android.content.Context;
+
 import com.squareup.picasso.Picasso;
 
 import dagger.Binds;
@@ -12,6 +14,7 @@ import hr.murielkamgang.moviehunt.components.di.FragmentScoped;
 import hr.murielkamgang.moviehunt.data.model.movie.Movie;
 import hr.murielkamgang.moviehunt.data.source.Repository;
 import hr.murielkamgang.moviehunt.data.source.base.BaseKVH;
+import hr.murielkamgang.moviehunt.data.source.movie.FavoriteLocalSource;
 import hr.murielkamgang.moviehunt.data.source.movie.MovieLocalSource;
 import hr.murielkamgang.moviehunt.data.source.movie.MovieRemoteSource;
 import hr.murielkamgang.moviehunt.data.source.movie.MovieRepository;
@@ -40,6 +43,12 @@ public abstract class HomeModule {
     @Provides
     static HomeAdapter provideHomeAdapter(Picasso picasso) {
         return new HomeAdapter(picasso);
+    }
+
+    @ActivityScoped
+    @Provides
+    static FavoriteLocalSource provideFavoriteLocalSource(Context context) {
+        return new FavoriteLocalSource(context);
     }
 
     @FragmentScoped

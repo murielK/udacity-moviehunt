@@ -52,25 +52,39 @@ class HomePresenter extends BaseContentListPresenter<Movie, HomeContract.View> i
 
     @Override
     public void delegateFavorite() {
+        preferenceHelper.setFavoriteSorting();
         clearMovies();
-        view.updateToolbarName(R.string.favorite);
-        internalLoad(((MovieRepository) movieRepository).getFavoriteAsObservable(), false);
+        internalLoad(false);
     }
 
     @Override
     protected Observable<List<Movie>> provideLoadObservable(boolean sync) {
-        final boolean isPopular = preferenceHelper.isPopularSorting();
-        view.updateToolbarName(isPopular ? R.string.most_popular : R.string.highest_rated);
-        return isPopular ? ((MovieRepository) movieRepository).getPopularAsObservable(sync)
-                : ((MovieRepository) movieRepository).getTopRatedAsObservable(sync);
+        switch (preferenceHelper.getSortingType()) {
+            case PreferenceHelper.PREF_FAVORITE:
+                view.updateToolbarName(R.string.favorite);
+                return ((MovieRepository) movieRepository).getFavoriteAsObservable();
+            case PreferenceHelper.PREF_TOP_RATING:
+                view.updateToolbarName(R.string.highest_rated);
+                return ((MovieRepository) movieRepository).getTopRatedAsObservable(sync);
+            case PreferenceHelper.PREF_MOST_POPULAR:
+                view.updateToolbarName(R.string.most_popular);
+                return ((MovieRepository) movieRepository).getPopularAsObservable(sync);
+            default:
+                return Observable.empty();
+        }
     }
 
     @Override
     protected void handleOnNewMovies(List<Movie> movies) {
-        if (view != null && this.movies == null) {
-            this.movies = (RealmResults<Movie>) movies;
-            this.movies.addChangeListener((movies1, changeSet) -> Utils.notifyAdapterView(movies1, changeSet, view));
-            view.onLoaded(this.movies);
+        if (view != null) {
+            if (movies instanceof RealmResults && ((RealmResults) movies).isManaged() && this.movies == null) {
+                this.movies = (RealmResults<Movie>) movies;
+                this.movies.addChangeListener((movies1, changeSet) -> Utils.notifyAdapterView(movies1, changeSet, view));
+                view.onLoaded(this.movies);
+            } else {
+                clearMovies();
+                super.handleOnNewMovies(movies);
+            }
         }
     }
 

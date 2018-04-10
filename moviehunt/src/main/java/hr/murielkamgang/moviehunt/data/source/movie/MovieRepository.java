@@ -25,11 +25,13 @@ public class MovieRepository extends BaseRepository<Movie, BaseKVH> implements M
     private final Logger logger = LoggerFactory.getLogger(MovieRepository.class);
     private final MovieLocalSource movieLocalSource;
     private final MovieRemoteSource movieRemoteSource;
+    private final FavoriteLocalSource favoriteLocalSource;
 
     @Inject
-    public MovieRepository(MovieLocalSource movieLocalSource, MovieRemoteSource movieRemoteSource) {
+    public MovieRepository(MovieLocalSource movieLocalSource, MovieRemoteSource movieRemoteSource, FavoriteLocalSource favoriteLocalSource) {
         this.movieLocalSource = movieLocalSource;
         this.movieRemoteSource = movieRemoteSource;
+        this.favoriteLocalSource = favoriteLocalSource;
     }
 
     @Override
@@ -55,14 +57,27 @@ public class MovieRepository extends BaseRepository<Movie, BaseKVH> implements M
 
     @Override
     public Observable<List<Movie>> getFavoriteAsObservable() {
-        return movieLocalSource.getFavoriteAsObservable();
+        return favoriteLocalSource.getAllDataAsObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
     public Observable<Boolean> addMovieToFavoriteAsObservable(BaseKVH baseKVH, boolean favorite) {
+        Observable<Boolean> favOb = favorite ?
+                movieLocalSource.getDataAsObservable(baseKVH)
+                        .subscribeOn(Schedulers.io())
+                        .flatMap(movie -> favoriteLocalSource.createDataAsObservable(movie).map(m -> true))
+                        .observeOn(AndroidSchedulers.mainThread())
+                :
+                favoriteLocalSource.deleteAsObservable(baseKVH)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread());
+
         return movieLocalSource.addMovieToFavoriteAsObservable(baseKVH, favorite)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread())
+                .concatWith(favOb);
     }
 
     @Override

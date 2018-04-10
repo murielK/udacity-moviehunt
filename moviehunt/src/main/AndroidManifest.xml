@@ -28,5 +28,9 @@
             android:theme="@style/AppThemeTransparent"
             tools:targetApi="jelly_bean" />
 
+        <provider
+            android:name=".data.source.movie.FavoriteContentProvider"
+            android:authorities="@string/CONTENT_AUTHORITY" />
+
     </application>
 </manifest>

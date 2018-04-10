@@ -13,11 +13,11 @@ import javax.inject.Singleton;
 @Singleton
 public class PreferenceHelper {
 
+    public static final String PREF_TOP_RATING = "PREF_NAME_TOP_RATING";
+    public static final String PREF_MOST_POPULAR = "PREF_NAME_MOST_POPULAR";
+    public static final String PREF_FAVORITE = "PREF_FAVORITE";
     private static final String BEEZER_SHARE_PREF_NAME = "SHARE_PREF_NAME";
     private static final String PREF_SORTING_TYPE_KEY = "PREF_SORTING_TYPE_KEY";
-    private static final String PREF_TOP_RATING = "PREF_NAME_TOP_RATING";
-    private static final String PREF_MOST_POPULAR = "PREF_NAME_MOST_POPULAR";
-
     private final Context context;
 
     @Inject
@@ -41,12 +41,12 @@ public class PreferenceHelper {
         editor().putString(PREF_SORTING_TYPE_KEY, PREF_TOP_RATING).commit();
     }
 
-    public boolean isPopularSorting() {
-        return preferences().getString(PREF_SORTING_TYPE_KEY, PREF_MOST_POPULAR).equals(PREF_MOST_POPULAR);//default is always popular sorting.
+    public void setFavoriteSorting() {
+        editor().putString(PREF_SORTING_TYPE_KEY, PREF_FAVORITE).commit();
     }
 
-    public boolean isTopRatingSorting() {
-        return preferences().getString(PREF_SORTING_TYPE_KEY, PREF_MOST_POPULAR).equals(PREF_TOP_RATING);//default is always popular sorting.
+    public String getSortingType() {
+        return preferences().getString(PREF_SORTING_TYPE_KEY, PREF_MOST_POPULAR);
     }
 
 }

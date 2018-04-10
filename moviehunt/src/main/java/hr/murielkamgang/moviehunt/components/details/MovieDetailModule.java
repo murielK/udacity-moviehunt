@@ -1,5 +1,7 @@
 package hr.murielkamgang.moviehunt.components.details;
 
+import android.content.Context;
+
 import com.squareup.picasso.Picasso;
 
 import dagger.Binds;
@@ -38,6 +40,7 @@ import hr.murielkamgang.moviehunt.data.source.credits.CreditsRepository;
 import hr.murielkamgang.moviehunt.data.source.image.ImageLocalSource;
 import hr.murielkamgang.moviehunt.data.source.image.ImageRemoteSource;
 import hr.murielkamgang.moviehunt.data.source.image.ImagesRepository;
+import hr.murielkamgang.moviehunt.data.source.movie.FavoriteLocalSource;
 import hr.murielkamgang.moviehunt.data.source.movie.MovieLocalSource;
 import hr.murielkamgang.moviehunt.data.source.movie.MovieRemoteSource;
 import hr.murielkamgang.moviehunt.data.source.movie.MovieRepository;
@@ -65,6 +68,12 @@ public abstract class MovieDetailModule {
     @Provides
     static MovieRemoteSource provideMovieRemoteSource(Retrofit retrofit) {
         return new MovieRemoteSource(retrofit, BuildConfig.API_KEY);
+    }
+
+    @ActivityScoped
+    @Provides
+    static FavoriteLocalSource provideFavoriteLocalSource(Context context) {
+        return new FavoriteLocalSource(context);
     }
 
     @ActivityScoped
